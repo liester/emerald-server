@@ -4,6 +4,6 @@ services:
   mongo:
     image: mongo
     restart: always
-    container_name: 'morningfeelgoods'
+    container_name: 'emerald-sports'
     ports:
-      - '27019:27017'
+      - '27022:27017'

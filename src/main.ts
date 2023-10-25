@@ -68,7 +68,7 @@ try {
     app.use(Sentry.Handlers.tracingHandler());
 
     const origin = isProduction
-        ? 'https://happierme.xyz'
+        ? 'https://emerald-ui.onrender.com'
         : 'http://localhost:5000';
     // CORS
     app.use(
