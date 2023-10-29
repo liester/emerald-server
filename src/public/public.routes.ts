@@ -1,4 +1,6 @@
+import Events from '../models/events';
 const publicPath = `/public`;
+
 const PublicRoutes = (app: any) => {
     app.get(`${publicPath}/hello`, async (request: any, response: any) => {
         console.log(`${publicPath}/hello was called`);
@@ -9,6 +11,14 @@ const PublicRoutes = (app: any) => {
         if (key && key === 'TestingSentryErrors') {
             throw new Error('Sentry Error Debug');
         }
+    });
+    app.get(`${publicPath}/events`, async (request: any, response: any) => {
+        console.log(`${publicPath}/events was called`);
+        const events = await Events.find({}).populate(
+            'createdBy',
+            'fullName email',
+        );
+        response.json(events);
     });
 };
 

@@ -5,13 +5,20 @@ import session, { SessionOptions } from 'express-session';
 import MongoStore from 'connect-mongo';
 import createMongooseConnection, { databaseUrl } from './database';
 import initializePassport from '../passport-config';
-import AffirmationRoutes from './affirmations/affirmations.routes';
 import AccountRoutes from './accounts/accounts.routes';
 import PublicRoutes from './public/public.routes';
 import ErrorHandler from '../error.handler';
 import * as Sentry from '@sentry/node';
 import AuthenticationRoutes from './authentication/authentication.routes';
 import { omit } from 'lodash';
+import EventsRoutes from './events/events.routes';
+import { IAccount } from './models/accounts';
+
+declare global {
+    namespace Express {
+        export interface User extends IAccount {}
+    }
+}
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -85,7 +92,7 @@ try {
     });
 
     PublicRoutes(app);
-    AffirmationRoutes(app);
+    EventsRoutes(app);
     AuthenticationRoutes(app);
     AccountRoutes(app);
     // The error handler must be before any other error middleware and after all controllers

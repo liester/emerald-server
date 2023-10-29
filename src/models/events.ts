@@ -1,5 +1,5 @@
-import { Schema, model, ObjectId } from 'mongoose';
-import Accounts, {IAccount} from "./accounts";
+import { Schema, model, ObjectId, Types, PopulatedDoc } from 'mongoose';
+import Accounts, { IAccount } from './accounts';
 
 interface IEventUpdate {
     _id: ObjectId;
@@ -13,8 +13,8 @@ interface IEvent {
     status: string;
     title: string;
     start?: Date;
-    updates: IEventUpdate;
-    createdBy: IAccount
+    updates: IEventUpdate[];
+    createdBy: PopulatedDoc<IAccount>;
 }
 
 const eventSchema = new Schema<IEvent>(
@@ -22,16 +22,18 @@ const eventSchema = new Schema<IEvent>(
         status: { type: String },
         title: { type: String },
         start: { type: Date, required: false, default: Date.now() },
-        updates: [{
-            player: { type: String},
-            action: { type: String },
-            gameTime: { type: String },
-        }],
-        createdBy: { type: Accounts, required: true },
+        updates: [
+            {
+                player: { type: String },
+                action: { type: String },
+                gameTime: { type: String },
+            },
+        ],
+        createdBy: { type: Schema.Types.ObjectId, ref: 'Account' },
     },
     { timestamps: true },
-)
+);
 
 export default model('Event', eventSchema);
 
-export { IEvent }
+export { IEvent };

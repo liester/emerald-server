@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import * as Sentry from '@sentry/node';
 import Accounts from '../models/accounts';
-import AffirmationsService from '../affirmations/affirmations.service';
 import { headerKey } from '../authentication/api.authentication';
 import ApiKeys from '../models/api.keys';
 import { ObjectId } from 'mongodb';
@@ -85,21 +84,12 @@ const AccountsController = {
     },
     create: async (request: any, response: any, next: any) => {
         try {
-            const numberOfAccounts: number = await Accounts.count({});
-            if (numberOfAccounts > MAX_ACCOUNTS) {
-                throw Error(
-                    'Apologies, we are not accepting new accounts at this time',
-                );
-            }
-            const welcomeMessage = `Ahoy! Welcome to Happier Me.  We're glad to have you. \n If you'd like to stop receiving messages, reply STOP`;
-            const { phoneNumber, fullName, email, messageTypes, password } =
-                request.body;
+            const { phoneNumber, fullName, email, password } = request.body;
             console.log(
                 `Creating account for: ${JSON.stringify({
                     phoneNumber,
                     fullName,
                     email,
-                    messageTypes,
                 })}`,
             );
             if (!phoneNumber || !fullName || !email || !password) {
@@ -121,12 +111,9 @@ const AccountsController = {
                 email,
                 phoneNumber,
                 apiKey: apiKey,
-                messageTypes,
                 fullName,
                 password: hashedPassword,
             });
-            await AffirmationsService.send(welcomeMessage, phoneNumber);
-            await AffirmationsService.send(`${fullName} signed up`);
             return response.json(account);
         } catch (e) {
             next(e);

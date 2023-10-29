@@ -13,12 +13,9 @@ interface IAccount {
     fullName?: string;
     createdAt: Date;
     updatedAt: Date;
-    messageTypes?: string[];
     sms: ISms;
     password: string;
     lastLogin?: Date;
-    deliveryTime?: string;
-    useSwearWords?: boolean;
 }
 
 const accountSchema = new Schema<IAccount>(
@@ -28,7 +25,6 @@ const accountSchema = new Schema<IAccount>(
         email: { type: String },
         phoneNumber: { type: String },
         fullName: { type: String, required: false },
-        messageTypes: { type: [String], required: false },
         sms: {
             remainingCount: { type: Number, default: 0 },
         },
@@ -37,8 +33,6 @@ const accountSchema = new Schema<IAccount>(
             required: true,
         },
         lastLogin: { type: Date, required: false },
-        deliveryTime: { type: String, required: false },
-        useSwearWords: { type: Boolean, required: false, default: false },
     },
     { timestamps: true },
 );

@@ -1,7 +1,7 @@
 import ApiAuthentication from '../authentication/api.authentication';
 import AccountsController from './accounts.controller';
 
-const accountPath = `/api/account`;
+const accountPath = `/api/accounts`;
 
 const AccountRoutes = (app: any) => {
     app.post(`${accountPath}/create`, AccountsController.create);
