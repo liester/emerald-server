@@ -26,22 +26,23 @@ try {
     const app = express();
     const port = process.env.PORT || 3003;
 
-    Sentry.init({
-        dsn: 'https://922c7d37b38344f99ac77ed174bcbbd8@o4505218028994560.ingest.sentry.io/4505218032992256',
-        integrations: [
-            // enable HTTP calls tracing
-            new Sentry.Integrations.Http({ tracing: true }),
-            // enable Express.js middleware tracing
-            new Sentry.Integrations.Express({ app }),
-            // Automatically instrument Node.js libraries and frameworks
-            ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
-        ],
-
-        // Set tracesSampleRate to 1.0 to capture 100%
-        // of transactions for performance monitoring.
-        // We recommend adjusting this value in production
-        tracesSampleRate: 1.0,
-    });
+    // Need to create a different sentry app
+    // Sentry.init({
+    //     dsn: 'https://922c7d37b38344f99ac77ed174bcbbd8@o4505218028994560.ingest.sentry.io/4505218032992256',
+    //     integrations: [
+    //         // enable HTTP calls tracing
+    //         new Sentry.Integrations.Http({ tracing: true }),
+    //         // enable Express.js middleware tracing
+    //         new Sentry.Integrations.Express({ app }),
+    //         // Automatically instrument Node.js libraries and frameworks
+    //         ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
+    //     ],
+    //
+    //     // Set tracesSampleRate to 1.0 to capture 100%
+    //     // of transactions for performance monitoring.
+    //     // We recommend adjusting this value in production
+    //     tracesSampleRate: 1.0,
+    // });
 
     // Set up session
 
