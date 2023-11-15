@@ -13,6 +13,7 @@ import AuthenticationRoutes from './authentication/authentication.routes';
 import { omit } from 'lodash';
 import EventsRoutes from './events/events.routes';
 import { IAccount } from './models/accounts';
+import { Server } from 'socket.io';
 
 declare global {
     namespace Express {
@@ -102,7 +103,7 @@ try {
     //Error Handler Must Be Last In Middleware
     app.use(ErrorHandler);
 
-    app.listen(process.env.PORT || port, async () => {
+    const server = app.listen(process.env.PORT || port, async () => {
         try {
             console.log('Connecting to mongodb');
             await createMongooseConnection();
@@ -113,6 +114,17 @@ try {
             console.log('Error connecting to mongodb');
             console.log(error);
         }
+    });
+    const io = new Server(server, {
+        cors: {
+            origin: '*',
+        },
+    });
+    io.on('connection', (socket) => {
+        console.log('a user connected');
+        socket.on('disconnect', () => {
+            console.log('user disconnected');
+        });
     });
 } catch (error) {
     console.log('Error starting application');
